@@ -1,11 +1,15 @@
 echo "### START ###"
 
+echo "### TESTS ###"
 flutter test &&
 
+echo "### CLEAN ###"
 flutter clean && 
 
+echo "### PUB GET ###"
 flutter pub get &&
 
+echo "### INCREMENT VERSION ###"
 # Estrae la versione corrente dal file pubspec.yaml
 VERSION=$(grep 'version: ' pubspec.yaml | sed 's/version: //' | tr -d '\n' | tr -d '\r' | cut -d" " -f1)
 
@@ -28,14 +32,20 @@ sed -i '' "s/version: $VERSION/version: $NEW_VERSION/" pubspec.yaml &&
 # Stampa la nuova versione
 echo "FROM $VERSION TO $NEW_VERSION" &&
 
+echo "### BUILD IPA ###"
 flutter build ipa && 
+
+echo "### BUILD APPBUNDLE ###"
 flutter build appbundle && 
+
+echo "### DEPLOY APPLE ###"
 cd ios && 
 fastlane ios release &&
 
 cd .. && 
 
-cd android &
+echo "### DEPLOY ANDROID ###"
+cd android &&
 fastlane android deploy &&
 
 echo "### FINISH ###"
